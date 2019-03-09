@@ -1,5 +1,6 @@
 package ru.timofeeva;
 
+import ru.timofeeva.box.Box;
 import ru.timofeeva.box.PresentBox;
 import ru.timofeeva.sweets.*;
 import ru.timofeeva.sweets.chocolate.*;
@@ -11,7 +12,7 @@ import ru.timofeeva.sweets.marmalade.MarmaladeTaste;
 public class Main {
 
     public static void main(String[] args) {
-        PresentBox box = new PresentBox();
+        Box box = new PresentBox();
         box.add(new Nuts());
         box.add(new Snickers());
         box.add(new Mars());
