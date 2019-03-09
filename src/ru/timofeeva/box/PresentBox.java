@@ -19,27 +19,20 @@ import java.util.Comparator;
  */
 
 public class PresentBox implements Box {
-    private Sweet[] sweets = new Sweet[10];
+    private Sweet[] sweets = new Sweet[0];
 
     /*
      * Создаем метод для заполнения массива.
      */
     @Override
     public void add(Sweet sweet) {
-        boolean flag = true;
-        for (int i = 0; i < sweets.length; i++) {
-
-            if (sweets[i] == null) {
-                flag = false;
-                sweets[i] = sweet;
-                break;
-            }
+        if (sweet == null){
+            System.out.println("You can not insert null value");
+            return;
         }
-        if (flag) {
-            Sweet[] largerSweets = createLargestSweet();
-            largerSweets[sweets.length] = sweet;
-            sweets = largerSweets;
-        }
+        Sweet[] largerSweets = createLargestSweet();
+        largerSweets[sweets.length] = sweet;
+        sweets = largerSweets;
 
     }
 
@@ -48,15 +41,11 @@ public class PresentBox implements Box {
      */
     @Override
     public void printBox() {
-        boolean isEmpty = true;
-        for (Sweet s : sweets) {
-            if (s != null) {
-                isEmpty = false;
-                System.out.println(s);
-            }
-        }
-        if (isEmpty){
+        if (isEmpty()) {
             System.out.println("Present box is empty!");
+        }
+        for (Sweet s : sweets) {
+            System.out.println(s);
         }
     }
 
@@ -147,18 +136,32 @@ public class PresentBox implements Box {
      */
     @Override
     public void delete(int index) {
-        if (index >= sweets.length || index < 0){
+        if(isEmpty()){
+            System.out.println("The box is empty");
+            return;
+        }
+        if (index >= sweets.length || index < 0) {
             System.out.println("Invalid index was entered!");
             return;
         }
-        if (sweets[index] == null) {
-            System.out.println("Position at index " + index + " is empty!");
-            return;
-        }
         Sweet element = sweets[index];
-        sweets[index] = null;
-        System.out.println("Element " + element.getClass().getSimpleName()+ " "
-                + element.getName()+ " at position " + index + " is deleted.");
+        if(sweets.length == 1){
+            sweets = new Sweet[0];
+        } else {
+
+            Sweet[] newSweets = new Sweet[sweets.length - 1];
+            for (int i = 0, j = 0; i < sweets.length; i++, j++) {
+                if (i != index) {
+                    newSweets[j] = sweets[i];
+                } else {
+                    j--;
+                }
+            }
+            sweets = newSweets;
+        }
+
+        System.out.println("Element " + element.getClass().getSimpleName() + " "
+                + element.getName() + " at position " + index + " is deleted.");
 
     }
 
@@ -166,7 +169,7 @@ public class PresentBox implements Box {
      *Создаем метод для увеличения массива.
      */
     private Sweet[] createLargestSweet() {
-        return Arrays.copyOf(sweets, sweets.length + 5);
+        return Arrays.copyOf(sweets, sweets.length + 1);
     }
 
     /*
@@ -194,17 +197,10 @@ public class PresentBox implements Box {
      * Проверяем пустая ли коробка.
      */
     private boolean isEmpty() {
-        boolean isEmpty = true;
-        if (sweets == null ||sweets.length == 0){
+        if (sweets == null || sweets.length == 0) {
             return true;
         }
-        for (int i = 0; i < sweets.length; i++) {
-            if (sweets[i] != null) {
-                isEmpty = false;
-                break;
-            }
-        }
-        return isEmpty;
+        return false;
     }
 
 }
