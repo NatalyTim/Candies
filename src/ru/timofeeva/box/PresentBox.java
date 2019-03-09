@@ -48,8 +48,15 @@ public class PresentBox implements Box {
      */
     @Override
     public void printBox() {
+        boolean isEmpty = true;
         for (Sweet s : sweets) {
-            System.out.println(s);
+            if (s != null) {
+                isEmpty = false;
+                System.out.println(s);
+            }
+        }
+        if (isEmpty){
+            System.out.println("Present box is empty!");
         }
     }
 
@@ -86,6 +93,14 @@ public class PresentBox implements Box {
      */
     @Override
     public void optimizeWeight(double maxWeight) {
+        if (maxWeight < 0) {
+            System.out.println("Max weight can not be negative!");
+            return;
+        }
+        if (isEmpty()) {
+            System.out.println("The box is empty!");
+            return;
+        }
         double difference = getBoxWeight() - maxWeight;
         if (difference > 0) {
             sweets = arraySort(new SweetComparatorByWeight());
@@ -97,6 +112,7 @@ public class PresentBox implements Box {
                 }
             }
         }
+
         System.out.println("Present box weight after optimisation is " + getBoxWeight() + " grams");
     }
 
@@ -105,6 +121,14 @@ public class PresentBox implements Box {
      */
     @Override
     public void optimizePrice(double maxPrice) {
+        if (maxPrice < 0) {
+            System.out.println("Max price can not be negative!");
+            return;
+        }
+        if (isEmpty()) {
+            System.out.println("The box is empty!");
+            return;
+        }
         double difference = getBoxPrice() - maxPrice;
         if (difference > 0) {
             sweets = arraySort(new SweetComparatorByPrice());
@@ -123,8 +147,19 @@ public class PresentBox implements Box {
      */
     @Override
     public void delete(int index) {
-
+        if (index >= sweets.length || index < 0){
+            System.out.println("Invalid index was entered!");
+            return;
+        }
+        if (sweets[index] == null) {
+            System.out.println("Position at index " + index + " is empty!");
+            return;
+        }
+        Sweet element = sweets[index];
         sweets[index] = null;
+        System.out.println("Element " + element.getClass().getSimpleName()+ " "
+                + element.getName()+ " at position " + index + " is deleted.");
+
     }
 
     /*
@@ -153,6 +188,23 @@ public class PresentBox implements Box {
             }
         }
         return sweets;
+    }
+
+    /*
+     * Проверяем пустая ли коробка.
+     */
+    private boolean isEmpty() {
+        boolean isEmpty = true;
+        if (sweets == null ||sweets.length == 0){
+            return true;
+        }
+        for (int i = 0; i < sweets.length; i++) {
+            if (sweets[i] != null) {
+                isEmpty = false;
+                break;
+            }
+        }
+        return isEmpty;
     }
 
 }
